@@ -1,5 +1,51 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+function ShoppingList(){
+    this.groceries = [];
+}
 
-import { AppModule } from './app/app.module';
+ShoppingList.prototype.addItem = function(item){
+    this.groceries = this.groceries.concat([item]);
+}
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+ShoppingList.prototype.removeItem = function(item){
+    this.groceries = this.groceries.filter(function(grocery){
+        return item !== grocery;
+    });
+}
+
+var mylist = new ShoppingList();
+
+mylist.addItem('Banana');
+mylist.addItem('Apple');
+
+console.log(mylist.groceries);
+
+mylist.removeItem('Banana');
+
+console.log(mylist.groceries);
+
+class ShoppingList2{
+    groceries: string[];
+    constructor(){
+        this.groceries = [];
+    }
+
+    addItem(item){
+        this.groceries = [...this.groceries, item]
+    }
+
+    removeItem(item){
+        //shortest form
+        this.groceries = this.groceries.filter((grocery) => item !== grocery);
+        //longest form
+        // this.groceries = this.groceries.filter(function(grocery){
+        //     return item !== grocery;
+        // });
+    }
+}
+
+const myNewList = new ShoppingList2();
+
+myNewList.addItem('Pear');
+myNewList.addItem('Pizza');
+
+console.log(myNewList);
