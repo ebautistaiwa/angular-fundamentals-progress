@@ -1,5 +1,5 @@
-import { uppercase } from './formatter'
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-let myName = 'Todd';
+import { AppModule } from './app/app.module';
 
-console.log(uppercase(myName))
+platformBrowserDynamic().bootstrapModule(AppModule);
