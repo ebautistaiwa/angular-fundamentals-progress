@@ -21,9 +21,6 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
                 Check in date: 
                 {{ detail.checkInDate ? (detail.checkInDate | date: 'yMMMMd' | uppercase) : 'Not check in' }}
             </div>
-            <div class="children">
-                Children: {{ detail.children?.length || 0 }}
-            </div>
             <button (click)="toggleEdit()">{{ editing ? 'Done' : 'Edit' }}</button>
             <button (click)="onRemove()">Remove</button>
         </div>
