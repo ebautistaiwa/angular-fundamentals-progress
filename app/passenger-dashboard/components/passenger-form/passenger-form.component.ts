@@ -1,25 +1,25 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 
 import { Passenger } from '../../models/passenger.interface';
 import { Baggage } from '../../models/baggage.interface';
+import { EventEmitter } from '@angular/common/src/facade/async';
 
 @Component({
     selector: 'passenger-form',
     styleUrls: ['./passenger-form.component.scss'],
     template: `
-        <form #form="ngForm" novalidate>
-            {{ detail | json }}
+        <form (ngSubmit)="handleSubmit(form. value, form.valid)" #form="ngForm" novalidate>
             <div>
                 Passenger name: <input type="text" name="fullname" required #fullname="ngModel" [ngModel]="detail?.fullname">
                 <div *ngIf="fullname.errors?.required && fullname.dirty" class="error"> 
                     Passenger name is required
-                </div
+                </div>
             </div>
             <div>
                 Passenger id: <input type="number" name="id" required #id="ngModel" [ngModel]="detail?.id">
                 <div *ngIf="id.errors?.required && id.dirty" class="error"> 
                     Passenger ID is required
-                </div
+                </div>
             </div>
 
             <div>
@@ -43,10 +43,9 @@ import { Baggage } from '../../models/baggage.interface';
                     </option>
                 </select>
             </div>
-
-            <div>{{ form.value | json }}</div>
-            <div>Valid: {{ form.valid | json }}</div>
-            <div>Invalid: {{ form.invalid | json }}</div>
+            <button type="submit" [disabled]="form.invalid">
+                Update passenger
+            </button>
         </form>
     `
 })
@@ -54,6 +53,10 @@ export class PassengerFormComponent {
 
     @Input()
     detail: Passenger;
+
+    @Output()
+    update: EventEmitter<Passenger> = new EventEmitter<Passenger>();
+
     baggage: Baggage[] = [{
         key: 'none',
         value: 'No baggage'
@@ -74,6 +77,12 @@ export class PassengerFormComponent {
     toggleCheckIn(checkedIn: boolean){
         if(checkedIn){
             this.detail.checkInDate = Date.now();
+        }
+    }
+
+    handleSubmit(passenger: Passenger, isValid: boolean){
+        if(isValid){
+            this.update.emit(passenger);
         }
     }
 }
